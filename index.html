@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Канал</title>
+    <meta property="og:title" content="Мой Канал">
+    <meta property="og:description" content="Присоединяйся!">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes background-animation {
+            0% { background-position: -500px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .page-background {
+            overflow: auto;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(48deg, rgba(202,211,140,1) 0%, rgba(137,182,141,1) 53%, rgba(205,214,180,1) 96%);
+            font-family: "Roboto", sans-serif;
+        }
+
+        .page-header {
+            position: fixed;
+            justify-content: space-between;
+            display: flex;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 54px;
+            padding: 10px 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, .84);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 10;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-button {
+            padding: 9px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #fff;
+            background: #2481cc;
+            border-radius: 17px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            height: 34px;
+            transition: all .15s ease;
+        }
+
+        .content-container {
+            padding: 70px 16px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-card {
+            margin: 16px auto;
+            padding: 32px 0;
+            max-width: 400px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 122px;
+            height: 122px;
+            border-radius: 61px;
+            margin-bottom: 16px;
+        }
+
+        .profile-name {
+            font-size: 26px;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 6px;
+        }
+
+        .verified-icon {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+
+        .profile-subscribers {
+            font-size: 15px;
+            color: #7d7f81;
+            margin-bottom: 10px;
+        }
+
+        .profile-description {
+            font-size: 16px;
+            line-height: 25px;
+            color: #000;
+            padding: 0 16px;
+            margin-bottom: 24px;
+        }
+
+        .join-button {
+            display: inline-block;
+            padding: 13px 24px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #fff;
+            background-color: #2481cc;
+            background-image: linear-gradient(270deg, rgba(100,181,239,0) 48%, #64b5ef 75%, rgba(100,181,239,0) 100%);
+            background-repeat: no-repeat;
+            animation: background-animation linear 5s infinite;
+            border-radius: 22px;
+            text-decoration: none;
+            height: 42px;
+        }
+
+        .additional-text {
+            display: none;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #7d7f81;
+            padding: 0 16px;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .additional-text { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-background">
+        <!-- Шапка -->
+        <div class="page-header">
+            <div class="header-logo">
+                <svg height="34" viewBox="0 0 133 34" width="133" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd">
+                        <circle cx="17" cy="17" fill="#2481cc" r="17"></circle>
+                        <path d="m7.065 16.926c5.227-2.107 8.713-3.495 10.457-4.166 4.98-1.916 6.015-2.249 6.689-2.26.148-.002.48.032.695.193.181.136.231.32.255.45.024.129.054.423.03.653-.27 2.622-1.438 8.986-2.032 11.924-.251 1.243-.75 1.509-1.229 1.55-1.041.088-1.828-.486-2.837-1.098-1.578-.957-2.533-1.398-4.065-2.332-1.77-1.08-.212-1.584.797-2.553.264-.254 4.775-4.31 4.756-4.432-.007-.044-.141-.482-.246-.568-.105-.086-.26-.057-.371-.033-.158.033-2.68 1.574-7.564 4.624-.716.454-1.364.676-1.945.664-.64-.013-1.872-.335-2.787-.61-1.123-.338-1.538-.497-1.46-1.07.04-.299.326-.61.856-.936z" fill="#fff"></path>
+                        <path d="m49.4 24v-12.562h-4.224v-2.266h11.198v2.266h-4.268v12.562z" fill="#363b40"></path>
+                    </g>
+                </svg>
+            </div>
+            <a class="header-button" href="#" id="headerBtn">ПОЛУЧИТЬ ДОСТУП</a>
+        </div>
+
+        <!-- Карточка -->
+        <div class="content-container">
+            <div class="profile-card">
+                <img class="profile-image" src="https://via.placeholder.com/122x122.png?text=PHOTO" alt="Profile" id="profilePhoto">
+                
+                <div class="profile-name">
+                    <span id="profileName">Имя Фамилия</span>
+                    <svg class="verified-icon" xmlns="http://www.w3.org/2000/svg" fill="none" height="24" viewBox="0 0 26 26" width="24">
+                        <path d="m6 6h12v12h-12z" fill="#fff"/>
+                        <path clip-rule="evenodd" d="m14.38 1.51 1.82 1.82c.37.37.86.57 1.38.57h2.57c1.01 0 1.85.77 1.94 1.76l.01.19v2.57c0 .52.21 1.01.57 1.38l1.82 1.82c.71.71.76 1.84.13 2.61l-.13.15-1.82 1.82c-.37.37-.57.86-.57 1.38v2.57c0 1.01-.77 1.85-1.76 1.94l-.19.01h-2.57c-.52 0-1.01.21-1.38.57l-1.82 1.82c-.71.71-1.84.76-2.61.13l-.15-.13-1.82-1.82c-.37-.37-.86-.57-1.38-.57h-2.57c-1.01 0-1.85-.77-1.94-1.76l-.01-.19v-2.57c0-.52-.21-1.01-.57-1.38l-1.82-1.82c-.71-.71-.76-1.84-.13-2.61l.13-.15 1.82-1.82c.37-.37.57-.86.57-1.38v-2.57c0-1.08.87-1.95 1.95-1.95h2.57c.52 0 1.01-.21 1.38-.57l1.82-1.82c.76-.76 2-.76 2.76 0zm3.2 8.05c-.43-.34-1.03-.31-1.42.06l-.1.11-4.45 5.56-1.75-1.75-.11-.1c-.42-.32-1.03-.29-1.42.1s-.42.99-.1 1.42l.1.11 2.6 2.6.11.1c.42.32 1.02.29 1.4-.08l.1-.11 5.2-6.5.08-.12c.27-.46.17-1.05-.25-1.4z" fill="#1c93e3" fill-rule="evenodd"/>
+                    </svg>
+                </div>
+                
+                <div class="profile-subscribers" id="profileSubscribers">0 subscribers</div>
+                
+                <div class="profile-description" id="profileDescription">Описание канала</div>
+                
+                <div style="margin-top:24px;">
+                    <a class="join-button" href="#" id="joinBtn">ПОЛУЧИТЬ ДОСТУП</a>
+                </div>
+            </div>
+            
+            <div class="additional-text">
+                If you have <strong>Telegram</strong>, you can join<br>
+                <strong id="additionalName">Имя Фамилия</strong> right away.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // НАСТРОЙКИ (ПОМЕНЯЙ НА СВОИ ДАННЫЕ)
+        // ==========================================
+        
+        const ACTIVE_PIXEL_NUMBER = 1; // Меняй при бане FB: 1, 2 или 3
+        
+        const PIXELS = {
+            1: {
+                id: '807397898904647',
+                capi_token: 'EAAxxxТОКЕН_1',
+                name: 'Основной'
+            },
+            2: {
+                id: '123456789012345',
+                capi_token: 'EAAxxxТОКЕН_2',
+                name: 'Запасной'
+            },
+            3: {
+                id: '998877665544332',
+                capi_token: 'EAAxxxТОКЕН_3',
+                name: 'Ферма'
+            }
+        };
+        
+        const TELEGRAM_INVITE_LINK = 'https://t.me/+ТВОЙ_КОД';
+        
+        const LANDING = {
+            profile_name: 'Имя Канала',
+            profile_photo: 'https://via.placeholder.com/122x122.png?text=PHOTO',
+            subscribers: '1 234 subscribers',
+            description: 'Описание канала',
+            button_text: 'ПОЛУЧИТЬ ДОСТУП'
+        };
+        
+        // ==========================================
+        // ЛОГИКА (НЕ ТРОГАЙ)
+        // ==========================================
+        
+        const ACTIVE_PIXEL = PIXELS[ACTIVE_PIXEL_NUMBER];
+        console.log(`🟢 ПИКСЕЛЬ: ${ACTIVE_PIXEL.name} (ID: ${ACTIVE_PIXEL.id})`);
+        
+        document.getElementById('profileName').textContent = LANDING.profile_name;
+        document.getElementById('profilePhoto').src = LANDING.profile_photo;
+        document.getElementById('profileSubscribers').textContent = LANDING.subscribers;
+        document.getElementById('profileDescription').textContent = LANDING.description;
+        document.getElementById('additionalName').textContent = LANDING.profile_name;
+        document.getElementById('joinBtn').textContent = LANDING.button_text;
+        document.getElementById('headerBtn').textContent = LANDING.button_text;
+        
+        function getParam(name) {
+            return new URL(window.location.href).searchParams.get(name) || '';
+        }
+        
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+        
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+                const r = Math.random() * 16 | 0;
+                return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+            });
+        }
+        
+        // FB Pixel
+        !function(f,b,e,v,n,t,s) {
+            if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s);
+        }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        
+        fbq('init', ACTIVE_PIXEL.id);
+        fbq('track', 'PageView');
+        
+        // FB CAPI
+        function sendCAPIMetaEvent(eventName, eventId, userData) {
+            const payload = {
+                data: [{
+                    event_name: eventName,
+                    event_time: Math.floor(Date.now() / 1000),
+                    action_source: 'website',
+                    event_source_url: window.location.href,
+                    event_id: eventId,
+                    user_data: userData,
+                    custom_data: { value: 1.00, currency: 'USD' }
+                }]
+            };
+            
+            return fetch(`https://graph.facebook.com/v18.0/${ACTIVE_PIXEL.id}/events?access_token=${ACTIVE_PIXEL.capi_token}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.json())
+            .then(d => console.log('✅ CAPI:', d))
+            .catch(e => console.error('❌ CAPI:', e));
+        }
+        
+        function convertToTelegramLink(url) {
+            if (url.startsWith('tg://')) return url;
+            if (url.includes('t.me/+')) {
+                return `tg://join?invite=${url.split('/+').pop()}`;
+            }
+            if (url.includes('t.me/')) {
+                return `tg://resolve?domain=${url.replace('https://t.me/', '').split('?')[0]}`;
+            }
+            return url;
+        }
+        
+        let isProcessing = false;
+        
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest('a');
+            if (!target || isProcessing) return;
+            if (!target.classList.contains('join-button') && !target.classList.contains('header-button')) return;
+            
+            e.preventDefault();
+            isProcessing = true;
+            
+            const eventId = generateUUID();
+            console.log('🔴 КЛИК | event_id:', eventId);
+            
+            setTimeout(() => {
+                const fbp = getCookie('_fbp') || '';
+                const fbc = getCookie('_fbc') || '';
+                
+                sendCAPIMetaEvent('Lead', eventId, {
+                    client_user_agent: navigator.userAgent,
+                    fbp: fbp,
+                    fbc: fbc,
+                });
+                
+                fbq('track', 'Lead', {}, { eventID: eventId });
+                
+                const telegramLink = convertToTelegramLink(TELEGRAM_INVITE_LINK);
+                console.log('🔴 Редирект:', telegramLink);
+                window.location.href = telegramLink;
+                isProcessing = false;
+            }, 300);
+        });
+    </script>
+</body>
+</html>
