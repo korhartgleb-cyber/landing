@@ -236,11 +236,22 @@ const fbc = getCookie('_fbc') || '';
 // Кодируем данные в base64
 const payload = btoa(`${fbc}|${fbp}`);
 
-// Формируем ссылку на бота с параметрами
-const botUrl = `https://t.me/${BOT_USERNAME}?start=${payload}`;
+// Формируем ссылку напрямую в приложение Telegram (минуя веб-версию)
+const botUrl = `tg://resolve?domain=${BOT_USERNAME}&start=${payload}`;
+const webFallbackUrl = `https://t.me/${BOT_USERNAME}?start=${payload}`;
 
-console.log('🔴 Редирект в бота:', botUrl);
+console.log('🔴 Редирект в приложение Telegram:', botUrl);
+
+// Пробуем открыть приложение Telegram
 window.location.href = botUrl;
+
+// Fallback: если приложение не открылось через 2 секунды, открываем веб-версию
+setTimeout(() => {
+if (!document.hidden) {
+console.log('🔴 Приложение не открылось, открываем веб-версию:', webFallbackUrl);
+window.location.href = webFallbackUrl;
+}
+}, 2000);
 
 isProcessing = false;
 }, 300);
