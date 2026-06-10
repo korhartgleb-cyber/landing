@@ -7,11 +7,7 @@
 <meta property="og:title" content="Мой Канал">
 <meta property="og:description" content="Присоединяйся!">
 <style>
-* {
-padding: 0;
-margin: 0;
-box-sizing: border-box;
-}
+* { padding: 0; margin: 0; box-sizing: border-box; }
 @keyframes background-animation {
 0% { background-position: -500px 0; }
 100% { background-position: 1000px 0; }
@@ -41,10 +37,7 @@ backdrop-filter: blur(25px);
 -webkit-backdrop-filter: blur(25px);
 z-index: 10;
 }
-.header-logo {
-display: flex;
-align-items: center;
-}
+.header-logo { display: flex; align-items: center; }
 .header-button {
 padding: 9px 16px;
 font-size: 14px;
@@ -116,6 +109,7 @@ animation: background-animation linear 5s infinite;
 border-radius: 22px;
 text-decoration: none;
 height: 42px;
+cursor: pointer;
 }
 .additional-text {
 display: none;
@@ -172,25 +166,18 @@ If you have <strong>Telegram</strong>, you can join<br>
 // ==========================================
 // НАСТРОЙКИ (ПОМЕНЯЙ НА СВОИ ДАННЫЕ)
 // ==========================================
-const ACTIVE_PIXEL_NUMBER = 1; // Меняй при бане FB: 1, 2 или 3
+const BOT_USERNAME = 'YOUR_BOT_USERNAME'; // ← ЗАМЕНИ НА ЮЗЕРНЕЙМ СВОЕГО БОТА (без @)
+
+const ACTIVE_PIXEL_NUMBER = 1;
 const PIXELS = {
 1: {
-id: '1174930024774134',          // ← ЗАМЕНИ НА СВОЙ PIXEL ID
-capi_token: 'EAAN7iIdv8dgBRhcBvUhQlXWdR48yfXWrIweX338p479YcIscF7A4ZA82ZBRfLTtkuHfc2isIZBajxdd4HxYeGXb9sYdEMJoAY9zg9vZCn69vSIRbipEHFwJz93XMBWs9ZBULAGVTUOYbuUBZBVUTSARZA9D8MgCRluPtfrR2SOgXOAzP6tPit6VSKHNnBmQ2M4QRgZDZD',  // ← ЗАМЕНИ НА СВОЙ CAPI TOKEN
+id: '1174930024774134',
+capi_token: 'EAAN7iIdv8dgBRhcBvUhQlXWdR48yfXWrIweX338p479YcIscF7A4ZA82ZBRfLTtkuHfc2isIZBajxdd4HxYeGXb9sYdEMJoAY9zg9vZCn69vSIRbipEHFwJz93XMBWs9ZBULAGVTUOYbuUBZBVUTSARZA9D8MgCRluPtfrR2SOgXOAzP6tPit6VSKHNnBmQ2M4QRgZDZD',
 name: 'Основной'
-},
-2: {
-id: '123456789012345',          // Запасной (пока заглушка)
-capi_token: 'EAAxxxТОКЕН_2',
-name: 'Запасной'
-},
-3: {
-id: '998877665544332',          // Ферма (пока заглушка)
-capi_token: 'EAAxxxТОКЕН_3',
-name: 'Ферма'
 }
 };
-const TELEGRAM_INVITE_LINK = 'https://t.me/+N5EnXMxFGZ41ODVl';  // ← УЖЕ ВСТАВИЛ ТВОЮ ССЫЛКУ!
+
+const TELEGRAM_INVITE_LINK = 'https://t.me/+N5EnXMxFGZ41ODVl';
 const LANDING = {
 profile_name: 'Amina Dzhuraeva~💵👩‍💻',
 profile_photo: 'https://github.com/korhartgleb-cyber/landing/blob/main/Flag_of_Tajikistan.svg.png?raw=true',
@@ -198,11 +185,13 @@ subscribers: '20 782 subscribers',
 description: 'Хазорон нафар шахрвандони Точикистон аллакай даромади аввалини худро мегиранд ва сармояи худро 20-30 маротиба зиёд кунед! Ба канал обуна шавед ва имруз аз 17000TJS пул кор кунед!',
 button_text: 'МАЪЛУМОТИ БЕШТАР'
 };
+
 // ==========================================
 // ЛОГИКА (НЕ ТРОГАЙ)
 // ==========================================
 const ACTIVE_PIXEL = PIXELS[ACTIVE_PIXEL_NUMBER];
 console.log(`🟢 ПИКСЕЛЬ: ${ACTIVE_PIXEL.name} (ID: ${ACTIVE_PIXEL.id})`);
+
 document.getElementById('profileName').textContent = LANDING.profile_name;
 document.getElementById('profilePhoto').src = LANDING.profile_photo;
 document.getElementById('profileSubscribers').textContent = LANDING.subscribers;
@@ -210,21 +199,14 @@ document.getElementById('profileDescription').textContent = LANDING.description;
 document.getElementById('additionalName').textContent = LANDING.profile_name;
 document.getElementById('joinBtn').textContent = LANDING.button_text;
 document.getElementById('headerBtn').textContent = LANDING.button_text;
-function getParam(name) {
-return new URL(window.location.href).searchParams.get(name) || '';
-}
+
 function getCookie(name) {
 const value = `; ${document.cookie}`;
 const parts = value.split(`; ${name}=`);
 if (parts.length === 2) return parts.pop().split(';').shift();
 return null;
 }
-function generateUUID() {
-return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-const r = Math.random() * 16 | 0;
-return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-});
-}
+
 // FB Pixel
 !function(f,b,e,v,n,t,s) {
 if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -235,59 +217,31 @@ s.parentNode.insertBefore(t,s);
 }(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', ACTIVE_PIXEL.id);
 fbq('track', 'PageView');
-// FB CAPI
-function sendCAPIMetaEvent(eventName, eventId, userData) {
-const payload = {
-data: [{
-event_name: eventName,
-event_time: Math.floor(Date.now() / 1000),
-action_source: 'website',
-event_source_url: window.location.href,
-event_id: eventId,
-user_data: userData,
-custom_data: { value: 1.00, currency: 'USD' }
-}]
-};
-return fetch(`https://graph.facebook.com/v18.0/${ACTIVE_PIXEL.id}/events?access_token=${ACTIVE_PIXEL.capi_token}`, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify(payload)
-})
-.then(r => r.json())
-.then(d => console.log('✅ CAPI:', d))
-.catch(e => console.error('❌ CAPI:', e));
-}
-function convertToTelegramLink(url) {
-if (url.startsWith('tg://')) return url;
-if (url.includes('t.me/+')) {
-return `tg://join?invite=${url.split('/+').pop()}`;
-}
-if (url.includes('t.me/')) {
-return `tg://resolve?domain=${url.replace('https://t.me/', '').split('?')[0]}`;
-}
-return url;
-}
+
 let isProcessing = false;
 document.addEventListener('click', function(e) {
 const target = e.target.closest('a');
 if (!target || isProcessing) return;
 if (!target.classList.contains('join-button') && !target.classList.contains('header-button')) return;
+
 e.preventDefault();
 isProcessing = true;
-const eventId = generateUUID();
-console.log('🔴 КЛИК | event_id:', eventId);
+
+console.log('🔴 КЛИК | Забираем куки...');
+
 setTimeout(() => {
 const fbp = getCookie('_fbp') || '';
 const fbc = getCookie('_fbc') || '';
-sendCAPIMetaEvent('Lead', eventId, {
-client_user_agent: navigator.userAgent,
-fbp: fbp,
-fbc: fbc,
-});
-fbq('track', 'Lead', {}, { eventID: eventId });
-const telegramLink = convertToTelegramLink(TELEGRAM_INVITE_LINK);
-console.log('🔴 Редирект:', telegramLink);
-window.location.href = telegramLink;
+
+// Кодируем данные в base64
+const payload = btoa(`${fbc}|${fbp}`);
+
+// Формируем ссылку на бота с параметрами
+const botUrl = `https://t.me/${BOT_USERNAME}?start=${payload}`;
+
+console.log('🔴 Редирект в бота:', botUrl);
+window.location.href = botUrl;
+
 isProcessing = false;
 }, 300);
 });
