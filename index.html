@@ -266,11 +266,11 @@
         // МАТРИЦА ДАННЫХ
         // ============================================================
         const MATRIX = [
-            { income: 17000, times: [7,6,5,4,3,2], prices: [200,220,240,260,280,300] },
-            { income: 18800, times: [7,6,5,4,3,2], prices: [240,260,280,300,320,340] },
-            { income: 20600, times: [7,6,5,4,3,2], prices: [280,300,320,340,360,380] },
-            { income: 22400, times: [7,6,5,4,3,2], prices: [320,340,360,380,400,420] },
-            { income: 24200, times: [7,6,5,4,3,2], prices: [360,380,400,420,440,460] },
+            { income: 17000, times: [7,6,5,4,3,2], prices: [300,320,340,360,380,400] },
+            { income: 18800, times: [7,6,5,4,3,2], prices: [320,340,360,380,400,420] },
+            { income: 20600, times: [7,6,5,4,3,2], prices: [340,360,380,400,420,440] },
+            { income: 22400, times: [7,6,5,4,3,2], prices: [360,380,400,420,440,460] },
+            { income: 24200, times: [7,6,5,4,3,2], prices: [380,400,420,440,460,480] },
             { income: 26000, times: [7,6,5,4,3,2], prices: [400,420,440,460,480,500] }
         ];
 
@@ -368,17 +368,33 @@
             const time = item.times[selectedTimeIndex];
             const price = item.prices[selectedTimeIndex];
 
-            // 1. Отправляем InitiateCheckout в CAPI
+            // 1. Отправляем InitiateCheckout в CAPI (fire-and-forget)
             sendCAPIEvent(income, time, price, decision);
 
-            // 2. Редирект в Telegram (параллельно, без ожидания)
+            // 2. Редирект в Telegram — СРАЗУ, без ожидания CAPI
             const startParam = `quiz_${decision}_${income}_${time}_${price}`;
             const tgUrl = `https://t.me/${CONFIG.BOT_USERNAME}?start=${startParam}`;
 
-            // Небольшая задержка чтобы CAPI успел улететь
+            // Пробуем разные способы редиректа
+            try {
+                // Способ 1: Создаем невидимую ссылку и кликаем
+                const link = document.createElement('a');
+                link.href = tgUrl;
+                link.target = '_self';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (e) {
+                // Способ 2: Fallback через location
+                window.location.replace(tgUrl);
+            }
+
+            // Способ 3: Если ничего не сработало через 1с — открываем в новой вкладке
             setTimeout(() => {
-                window.location.href = tgUrl;
-            }, 300);
+                if (!document.hidden) {
+                    window.open(tgUrl, '_blank');
+                }
+            }, 1000);
         }
 
         // ============================================================
