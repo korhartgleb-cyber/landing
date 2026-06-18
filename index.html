@@ -1,269 +1,463 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tg">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Мой Канал</title>
-<meta property="og:title" content="Мой Канал">
-<meta property="og:description" content="Присоединяйся!">
-<style>
-* { padding: 0; margin: 0; box-sizing: border-box; }
-@keyframes background-animation {
-0% { background-position: -500px 0; }
-100% { background-position: 1000px 0; }
-}
-.page-background {
-overflow: auto;
-height: 100vh;
-width: 100%;
-position: fixed;
-top: 0;
-left: 0;
-background: linear-gradient(48deg, rgba(202,211,140,1) 0%, rgba(137,182,141,1) 53%, rgba(205,214,180,1) 96%);
-font-family: "Roboto", sans-serif;
-}
-.page-header {
-position: fixed;
-justify-content: space-between;
-display: flex;
-left: 0;
-right: 0;
-top: 0;
-height: 54px;
-padding: 10px 16px;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-background: rgba(255, 255, 255, .84);
-backdrop-filter: blur(25px);
--webkit-backdrop-filter: blur(25px);
-z-index: 10;
-}
-.header-logo { display: flex; align-items: center; }
-.header-button {
-padding: 9px 16px;
-font-size: 14px;
-font-weight: bold;
-text-transform: uppercase;
-color: #fff;
-background: #2481cc;
-border-radius: 17px;
-text-decoration: none;
-display: flex;
-align-items: center;
-height: 34px;
-transition: all .15s ease;
-}
-.content-container {
-padding: 70px 16px 40px;
-position: relative;
-z-index: 1;
-}
-.profile-card {
-margin: 16px auto;
-padding: 32px 0;
-max-width: 400px;
-background: #fff;
-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-border-radius: 16px;
-text-align: center;
-}
-.profile-image {
-width: 122px;
-height: 122px;
-border-radius: 61px;
-margin-bottom: 16px;
-}
-.profile-name {
-font-size: 26px;
-font-weight: bold;
-color: #000;
-margin-bottom: 6px;
-}
-.verified-icon {
-display: inline-block;
-vertical-align: middle;
-margin-left: 4px;
-}
-.profile-subscribers {
-font-size: 15px;
-color: #7d7f81;
-margin-bottom: 10px;
-}
-.profile-description {
-font-size: 16px;
-line-height: 25px;
-color: #000;
-padding: 0 16px;
-margin-bottom: 24px;
-}
-.join-button {
-display: inline-block;
-padding: 13px 24px;
-font-size: 14px;
-font-weight: bold;
-text-transform: uppercase;
-color: #fff;
-background-color: #2481cc;
-background-image: linear-gradient(270deg, rgba(100,181,239,0) 48%, #64b5ef 75%, rgba(100,181,239,0) 100%);
-background-repeat: no-repeat;
-animation: background-animation linear 5s infinite;
-border-radius: 22px;
-text-decoration: none;
-height: 42px;
-cursor: pointer;
-}
-.additional-text {
-display: none;
-margin-top: 24px;
-font-size: 14px;
-color: #7d7f81;
-padding: 0 16px;
-text-align: center;
-}
-@media (max-width: 480px) {
-.additional-text { display: block; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ҳисобкунаки даромад</title>
+    <style>
+        :root {
+            --gold: #FFD700;
+            --gold-dim: #B8960F;
+            --bg: #0a0a0a;
+            --bg-card: #141414;
+            --bg-hover: #1e1e1e;
+            --text: #ffffff;
+            --text-dim: #888888;
+            --border: #2a2a2a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            z-index: 100;
+        }
+
+        /* Container */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .header .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .header p {
+            color: var(--text-dim);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Step container */
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Buttons */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .btn-option {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 12px;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .btn-option:hover {
+            border-color: var(--gold);
+            background: var(--bg-hover);
+        }
+        .btn-option:active {
+            transform: scale(0.97);
+        }
+        .btn-option .label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* CTA buttons */
+        .cta-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .btn-cta {
+            border: none;
+            border-radius: 12px;
+            padding: 18px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-cta:active { transform: scale(0.97); }
+        .btn-cta-yes {
+            background: var(--gold);
+            color: #000;
+        }
+        .btn-cta-no {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+        .btn-cta-no:hover {
+            border-color: var(--gold);
+            color: var(--text);
+        }
+
+        /* Result card */
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 20px;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .result-row:last-child { border-bottom: none; }
+        .result-label { color: var(--text-dim); font-size: 14px; }
+        .result-value { font-weight: 700; font-size: 16px; }
+        .result-value.gold { color: var(--gold); }
+        .result-big {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .result-big .amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+        .result-big .sub {
+            color: var(--text-dim);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        /* Mobile */
+        @media (max-width: 380px) {
+            .btn-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 20px; }
+        }
+    </style>
 </head>
 <body>
-<div class="page-background">
-<!-- Шапка -->
-<div class="page-header">
-<div class="header-logo">
-<svg height="34" viewBox="0 0 133 34" width="133" xmlns="http://www.w3.org/2000/svg">
-<g fill="none" fill-rule="evenodd">
-<circle cx="17" cy="17" fill="#2481cc" r="17"></circle>
-<path d="m7.065 16.926c5.227-2.107 8.713-3.495 10.457-4.166 4.98-1.916 6.015-2.249 6.689-2.26.148-.002.48.032.695.193.181.136.231.32.255.45.024.129.054.423.03.653-.27 2.622-1.438 8.986-2.032 11.924-.251 1.243-.75 1.509-1.229 1.55-1.041.088-1.828-.486-2.837-1.098-1.578-.957-2.533-1.398-4.065-2.332-1.77-1.08-.212-1.584.797-2.553.264-.254 4.775-4.31 4.756-4.432-.007-.044-.141-.482-.246-.568-.105-.086-.26-.057-.371-.033-.158.033-2.68 1.574-7.564 4.624-.716.454-1.364.676-1.945.664-.64-.013-1.872-.335-2.787-.61-1.123-.338-1.538-.497-1.46-1.07.04-.299.326-.61.856-.936z" fill="#fff"></path>
-<path d="m49.4 24v-12.562h-4.224v-2.266h11.198v2.266h-4.268v12.562z" fill="#363b40"></path>
-</g>
-</svg>
-</div>
-<a class="header-button" href="#" id="headerBtn">ПОЛУЧИТЬ ДОСТУП</a>
-</div>
-<!-- Карточка -->
-<div class="content-container">
-<div class="profile-card">
-<img class="profile-image" src="https://github.com/korhartgleb-cyber/landing/blob/main/Flag_of_Tajikistan.svg.png?raw=true" alt="Profile" id="profilePhoto">
-<div class="profile-name">
-<span id="profileName">Имя Канала</span>
-<svg class="verified-icon" xmlns="http://www.w3.org/2000/svg" fill="none" height="24" viewBox="0 0 26 26" width="24">
-<path d="m6 6h12v12h-12z" fill="#fff"/>
-<path clip-rule="evenodd" d="m14.38 1.51 1.82 1.82c.37.37.86.57 1.38.57h2.57c1.01 0 1.85.77 1.94 1.76l.01.19v2.57c0 .52.21 1.01.57 1.38l1.82 1.82c.71.71.76 1.84.13 2.61l-.13.15-1.82 1.82c-.37.37-.57.86-.57 1.38v2.57c0 1.01-.77 1.85-1.76 1.94l-.19.01h-2.57c-.52 0-1.01.21-1.38.57l-1.82 1.82c-.71.71-1.84.76-2.61.13l-.15-.13-1.82-1.82c-.37-.37-.86-.57-1.38-.57h-2.57c-1.01 0-1.85-.77-1.94-1.76l-.01-.19v-2.57c0-.52-.21-1.01-.57-1.38l-1.82-1.82c-.71-.71-.76-1.84-.13-2.61l.13-.15 1.82-1.82c.37-.37.57-.86.57-1.38v-2.57c0-1.08.87-1.95 1.95-1.95h2.57c.52 0 1.01-.21 1.38-.57l1.82-1.82c.76-.76 2-.76 2.76 0zm3.2 8.05c-.43-.34-1.03-.31-1.42.06l-.1.11-4.45 5.56-1.75-1.75-.11-.1c-.42-.32-1.03-.29-1.42.1s-.42.99-.1 1.42l.1.11 2.6 2.6.11.1c.42.32 1.02.29 1.4-.08l.1-.11 5.2-6.5.08-.12c.27-.46.17-1.05-.25-1.4z" fill="#1c93e3" fill-rule="evenodd"/>
-</svg>
-</div>
-<div class="profile-subscribers" id="profileSubscribers">20 782 subscribers</div>
-<div class="profile-description" id="profileDescription">Хазорон нафар шахрвандони Точикистон аллакай даромади аввалини худро мегиранд ва сармояи худро 20-30 маротиба зиёд кунед! Ба канал обуна шавед ва имруз аз 17000TJS пул кор кунед!</div>
-<div style="margin-top:24px;">
-<a class="join-button" href="#" id="joinBtn">МАЪЛУМОТИ БЕШТАР</a>
-</div>
-</div>
-<div class="additional-text">
-If you have <strong>Telegram</strong>, you can join<br>
-<strong id="additionalName">Имя Канала</strong> right away.
-</div>
-</div>
-</div>
-<script>
-// ==========================================
-// НАСТРОЙКИ (ПОМЕНЯЙ НА СВОИ ДАННЫЕ)
-// ==========================================
-const BOT_USERNAME = 'rfx_agency_alert_bot'; // ← ЗАМЕНИ НА ЮЗЕРНЕЙМ СВОЕГО БОТА (без @)
+    <div class="progress-bar" id="progressBar"></div>
 
-const ACTIVE_PIXEL_NUMBER = 1;
-const PIXELS = {
-1: {
-id: '1174930024774134',
-capi_token: 'EAAN7iIdv8dgBRhcBvUhQlXWdR48yfXWrIweX338p479YcIscF7A4ZA82ZBRfLTtkuHfc2isIZBajxdd4HxYeGXb9sYdEMJoAY9zg9vZCn69vSIRbipEHFwJz93XMBWs9ZBULAGVTUOYbuUBZBVUTSARZA9D8MgCRluPtfrR2SOgXOAzP6tPit6VSKHNnBmQ2M4QRgZDZD',
-name: 'Основной'
-}
-};
+    <div class="container">
+        <!-- STEP 1: Income Selection -->
+        <div class="step active" id="step1">
+            <div class="header">
+                <div class="icon">💰</div>
+                <h1>Ҳисобкунаки даромади шумо</h1>
+                <p>Чӣ қадар даромад мехоҳед?</p>
+            </div>
+            <div class="btn-grid" id="incomeButtons"></div>
+        </div>
 
-const TELEGRAM_INVITE_LINK = 'https://t.me/+N5EnXMxFGZ41ODVl';
-const LANDING = {
-profile_name: 'Amina Dzhuraeva~💵👩‍💻',
-profile_photo: 'https://github.com/korhartgleb-cyber/landing/blob/main/Flag_of_Tajikistan.svg.png?raw=true',
-subscribers: '20 782 subscribers',
-description: 'Хазорон нафар шахрвандони Точикистон аллакай даромади аввалини худро мегиранд ва сармояи худро 20-30 маротиба зиёд кунед! Ба канал обуна шавед ва имруз аз 17000TJS пул кор кунед!',
-button_text: 'МАЪЛУМОТИ БЕШТАР'
-};
+        <!-- STEP 2: Time Selection -->
+        <div class="step" id="step2">
+            <div class="header">
+                <div class="icon">⏳</div>
+                <h1>Интенсивность работы</h1>
+                <p id="step2Subtitle">Барои даромад интихоб кунед:</p>
+            </div>
+            <div class="btn-grid" id="timeButtons"></div>
+        </div>
 
-// ==========================================
-// ЛОГИКА (НЕ ТРОГАЙ)
-// ==========================================
-const ACTIVE_PIXEL = PIXELS[ACTIVE_PIXEL_NUMBER];
-console.log(`🟢 ПИКСЕЛЬ: ${ACTIVE_PIXEL.name} (ID: ${ACTIVE_PIXEL.id})`);
+        <!-- STEP 3: Result + CTA -->
+        <div class="step" id="step3">
+            <div class="header">
+                <div class="icon">🎯</div>
+                <h1>Натиҷаи шумо</h1>
+            </div>
 
-document.getElementById('profileName').textContent = LANDING.profile_name;
-document.getElementById('profilePhoto').src = LANDING.profile_photo;
-document.getElementById('profileSubscribers').textContent = LANDING.subscribers;
-document.getElementById('profileDescription').textContent = LANDING.description;
-document.getElementById('additionalName').textContent = LANDING.profile_name;
-document.getElementById('joinBtn').textContent = LANDING.button_text;
-document.getElementById('headerBtn').textContent = LANDING.button_text;
+            <div class="result-card">
+                <div class="result-big">
+                    <div class="amount" id="resultIncome">0 TJS</div>
+                    <div class="sub">Даромади шумо дар як рӯз</div>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">⏱️ Формати кор</span>
+                    <span class="result-value" id="resultTime">—</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">💰 Нархи вуруд</span>
+                    <span class="result-value gold" id="resultPrice">— Сомонӣ</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">📈 Суръат</span>
+                    <span class="result-value" id="resultSpeed">—</span>
+                </div>
+            </div>
 
-function getParam(name) {
-return new URL(window.location.href).searchParams.get(name) || '';
-}
+            <p style="text-align:center; color:var(--text-dim); margin-top:24px; font-size:14px;">
+                Ин натиҷа ба шумо мувофиқ аст?
+            </p>
 
-function getCookie(name) {
-const value = `; ${document.cookie}`;
-const parts = value.split(`; ${name}=`);
-if (parts.length === 2) return parts.pop().split(';').shift();
-return null;
-}
+            <div class="cta-grid">
+                <button class="btn-cta btn-cta-yes" onclick="handleCTA('yes')">
+                    ✅ ҲА, ОПЛАТА КУНАМ!
+                </button>
+                <button class="btn-cta btn-cta-no" onclick="handleCTA('no')">
+                    ❌ НЕ, НУЖНЫ УСЛОВИЯ
+                </button>
+            </div>
+        </div>
+    </div>
 
-// FB Pixel
-!function(f,b,e,v,n,t,s) {
-if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s);
-}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', ACTIVE_PIXEL.id);
-fbq('track', 'PageView');
+    <script>
+        // ============================================================
+        // КОНФИГУРАЦИЯ
+        // ============================================================
+        const CONFIG = {
+            CAPI_URL: 'http://127.0.0.1:5001/api/send-capi',
+            BOT_USERNAME: 'YourBotUsername', // ← ЗАМЕНИ НА РЕАЛЬНЫЙ ЮЗЕРНЕЙМ
+            CAPI_TIMEOUT: 3000 // 3 секунды таймаут для CAPI
+        };
 
-let isProcessing = false;
-document.addEventListener('click', function(e) {
-const target = e.target.closest('a');
-if (!target || isProcessing) return;
-if (!target.classList.contains('join-button') && !target.classList.contains('header-button')) return;
+        // ============================================================
+        // МАТРИЦА ДАННЫХ
+        // ============================================================
+        const MATRIX = [
+            { income: 17000, times: [7,6,5,4,3,2], prices: [200,220,240,260,280,300] },
+            { income: 18800, times: [7,6,5,4,3,2], prices: [240,260,280,300,320,340] },
+            { income: 20600, times: [7,6,5,4,3,2], prices: [280,300,320,340,360,380] },
+            { income: 22400, times: [7,6,5,4,3,2], prices: [320,340,360,380,400,420] },
+            { income: 24200, times: [7,6,5,4,3,2], prices: [360,380,400,420,440,460] },
+            { income: 26000, times: [7,6,5,4,3,2], prices: [400,420,440,460,480,500] }
+        ];
 
-e.preventDefault();
-isProcessing = true;
+        const TIME_LABELS = [
+            '🐢 7 соат (Эконом)',
+            '6 соат',
+            '5 соат',
+            '4 соат',
+            '3 соат',
+            '🐇 2 соат (VIP)'
+        ];
 
-console.log('🔴 КЛИК | Забираем куки и крео...');
+        // ============================================================
+        // СОСТОЯНИЕ
+        // ============================================================
+        let selectedIncomeIndex = null;
+        let selectedTimeIndex = null;
+        let ctaSent = false;
 
-setTimeout(() => {
-const fbp = getCookie('_fbp') || '';
-const fbc = getCookie('_fbc') || '';
-// 🔥 Читаем название крео из URL (например: ?kreo=religion_v1)
-const kreo = getParam('kreo') || 'unknown';
+        // ============================================================
+        // ИНИЦИАЛИЗАЦИЯ
+        // ============================================================
+        function init() {
+            renderIncomeButtons();
+            setProgress(33);
+        }
 
-console.log(`🔴 Крео: ${kreo} | fbp: ${fbp ? 'есть' : 'нет'} | fbc: ${fbc ? 'есть' : 'нет'}`);
+        function renderIncomeButtons() {
+            const container = document.getElementById('incomeButtons');
+            container.innerHTML = MATRIX.map((item, i) => `
+                <button class="btn-option" onclick="selectIncome(${i})">
+                    ${formatNumber(item.income)} TJS
+                </button>
+            `).join('');
+        }
 
-// Кодируем ВСЕ ТРИ параметра в base64
-const payload = btoa(`${fbc}|${fbp}|${kreo}`);
+        function renderTimeButtons() {
+            const income = MATRIX[selectedIncomeIndex].income;
+            document.getElementById('step2Subtitle').textContent =
+                `Барои ${formatNumber(income)} TJS вақтро интихоб кунед:`;
 
-// Формируем ссылку напрямую в приложение Telegram (минуя веб-версию)
-const botUrl = `tg://resolve?domain=${BOT_USERNAME}&start=${payload}`;
-const webFallbackUrl = `https://t.me/${BOT_USERNAME}?start=${payload}`;
+            const container = document.getElementById('timeButtons');
+            container.innerHTML = MATRIX[selectedIncomeIndex].times.map((time, i) => `
+                <button class="btn-option" onclick="selectTime(${i})">
+                    ${TIME_LABELS[i]}
+                </button>
+            `).join('');
+        }
 
-console.log('🔴 Редирект в приложение Telegram:', botUrl);
+        // ============================================================
+        // ШАГ 1: ВЫБОР ДОХОДА
+        // ============================================================
+        function selectIncome(index) {
+            selectedIncomeIndex = index;
+            setProgress(66);
+            showStep('step2');
+            renderTimeButtons();
+        }
 
-// Пробуем открыть приложение Telegram
-window.location.href = botUrl;
+        // ============================================================
+        // ШАГ 2: ВЫБОР ВРЕМЕНИ
+        // ============================================================
+        function selectTime(index) {
+            selectedTimeIndex = index;
+            setProgress(100);
+            showResult();
+            showStep('step3');
+        }
 
-// Fallback: если приложение не открылось через 2 секунды, открываем веб-версию
-setTimeout(() => {
-if (!document.hidden) {
-console.log('🔴 Приложение не открылось, открываем веб-версию:', webFallbackUrl);
-window.location.href = webFallbackUrl;
-}
-}, 2000);
+        // ============================================================
+        // ШАГ 3: РЕЗУЛЬТАТ
+        // ============================================================
+        function showResult() {
+            const item = MATRIX[selectedIncomeIndex];
+            const income = item.income;
+            const time = item.times[selectedTimeIndex];
+            const price = item.prices[selectedTimeIndex];
+            const isVip = time <= 2;
 
-isProcessing = false;
-}, 300);
-});
-</script>
+            document.getElementById('resultIncome').textContent = `${formatNumber(income)} TJS`;
+            document.getElementById('resultTime').textContent = `${time} соат/рӯз`;
+            document.getElementById('resultPrice').textContent = `${price} Сомонӣ`;
+            document.getElementById('resultSpeed').textContent = isVip ? 'VIP-суръат' : 'Стандарт';
+        }
+
+        // ============================================================
+        // CTA: ОТПРАВКА CAPI + РЕДИРект В TELEGRAM
+        // ============================================================
+        function handleCTA(decision) {
+            if (ctaSent) return;
+            ctaSent = true;
+
+            const item = MATRIX[selectedIncomeIndex];
+            const income = item.income;
+            const time = item.times[selectedTimeIndex];
+            const price = item.prices[selectedTimeIndex];
+
+            // 1. Отправляем InitiateCheckout в CAPI
+            sendCAPIEvent(income, time, price, decision);
+
+            // 2. Редирект в Telegram (параллельно, без ожидания)
+            const startParam = `quiz_${decision}_${income}_${time}_${price}`;
+            const tgUrl = `https://t.me/${CONFIG.BOT_USERNAME}?start=${startParam}`;
+
+            // Небольшая задержка чтобы CAPI успел улететь
+            setTimeout(() => {
+                window.location.href = tgUrl;
+            }, 300);
+        }
+
+        // ============================================================
+        // CAPI: ОТПРАВКА СОБЫТИЯ
+        // ============================================================
+        async function sendCAPIEvent(income, time, price, decision) {
+            try {
+                const payload = {
+                    event_name: 'InitiateCheckout',
+                    user_data: {
+                        fbc: getCookie('_fbc') || '',
+                        fbp: getCookie('_fbp') || '',
+                        external_id: generateUniqueId()
+                    },
+                    custom_data: {
+                        value: price,
+                        currency: 'TJS',
+                        content_name: 'quiz_matrix',
+                        decision: decision,
+                        income_target: income,
+                        time_hours: time
+                    },
+                    source: 'landing'
+                };
+
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), CONFIG.CAPI_TIMEOUT);
+
+                const response = await fetch(CONFIG.CAPI_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    console.log('✅ CAPI InitiateCheckout sent:', decision);
+                } else {
+                    console.warn('⚠️ CAPI error:', response.status);
+                }
+            } catch (err) {
+                // НЕ БЛОКИРУЕМ редирект! Логируем и продолжаем.
+                console.warn('⚠️ CAPI unavailable (non-critical):', err.message);
+            }
+        }
+
+        // ============================================================
+        // УТИЛИТЫ
+        // ============================================================
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return '';
+        }
+
+        function generateUniqueId() {
+            return 'uid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        }
+
+        function showStep(stepId) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        function setProgress(percent) {
+            document.getElementById('progressBar').style.width = percent + '%';
+        }
+
+        // ============================================================
+        // ЗАПУСК
+        // ============================================================
+        init();
+    </script>
 </body>
 </html>
